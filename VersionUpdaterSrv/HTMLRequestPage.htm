@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="ajax.js"></script>
+    
+    <script type="text/javascript">
+        var httpRequest = null;
+
+        function SendRequest() {
+            if (!httpRequest) {
+                httpRequest = CreateHTTPRequestObject();   // defined in ajax.js
+            }
+            if (httpRequest) {
+                // The requested file must be in the same domain that the page is served from.
+                var url = "Default.aspx";
+                httpRequest.open("GET", url, true);    // async
+                httpRequest.setRequestHeader("AppName", "html.exe");
+                httpRequest.setRequestHeader("Version", "98.7654");
+                httpRequest.onreadystatechange = OnStateChange;
+                httpRequest.send(null);
+            }
+        }
+
+        function OnStateChange() {
+            if (httpRequest.readyState == 0 || httpRequest.readyState == 4) {
+                if (IsRequestSuccessful(httpRequest)) {    // defined in ajax.js
+                    alert("Request complete.");
+                }
+                else {
+                    alert("Operation failed.");
+                }
+            }
+        }
+
+
+        function CreateHTTPRequestObject() {
+            // although IE supports the XMLHttpRequest object, but it does not work on local files.
+            var forceActiveX = (window.ActiveXObject && location.protocol === "file:");
+            if (window.XMLHttpRequest && !forceActiveX) {
+                return new XMLHttpRequest();
+            }
+            else {
+                try {
+                    return new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) { }
+            }
+            alert("Your browser doesn't support XML handling!");
+            return null;
+        }
+
+
+        function IsRequestSuccessful(httpRequest) {
+            // IE: sometimes 1223 instead of 204
+            var success = (httpRequest.status == 0 ||
+        (httpRequest.status >= 200 && httpRequest.status < 300) ||
+        httpRequest.status == 304 || httpRequest.status == 1223);
+
+            return success;
+        }
+    </script>
+</head>
+<body>
+    <button onclick="SendRequest ()">Send request</button>
+</body>
+HTML Page
+</html>
