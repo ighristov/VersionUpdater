@@ -80,7 +80,6 @@
     <div style="width: auto">
         <div class="header" style="width: auto; float: none;">
             <h2 style="color: White; padding-left: 20px;">
-                Upload new file20px;">
                 Upload new file</h2>
         </div>
         <div style="padding-top: 10px">
