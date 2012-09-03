@@ -97,13 +97,18 @@ namespace VersionUpdaterSrv
             HttpContext.Current.Response.End();
         }
 
-        public static void Write_AppNotFound_in_Response(string inApplicationName)
+        public static void Write_AppNotFound_in_Response(string inApplicationName, string inApplicationVersion)
         {
             HttpContext.Current.Response.ClearContent();
-            HttpContext.Current.Response.AddHeader(Constants.C_ERRORCODE, ((int)Constants.ErrorCodes.ecApplicationNotFound).ToString());
-            HttpContext.Current.Response.AddHeader(Constants.C_ERRORMSG, string.Format("The requested application \"{0}\" is not present on server", inApplicationName));
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORCODE, ((int) Constants.ErrorCodes.ecApplicationNotFound).ToString());
+            string _errorMessage = string.IsNullOrWhiteSpace(inApplicationVersion)
+                                       ? string.Format("The requested application \"{0}\" is not present on server", inApplicationName)
+                                       : string.Format("The requested application \"{0}\", version {1} is not present on server", inApplicationName,
+                                                       inApplicationVersion);
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORMSG, _errorMessage);
             HttpContext.Current.Response.End();
         }
+
         public static void Write_NoGreaterVersion_in_Response(string inApplicationName, Version inVersion)
         {
             HttpContext.Current.Response.ClearContent();

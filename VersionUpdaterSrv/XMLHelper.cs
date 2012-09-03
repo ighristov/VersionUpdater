@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -64,6 +65,20 @@ namespace VersionUpdaterSrv
                 _resultVersion = _versions.First();
             }
             return _resultVersion;
+        }
+
+        /// <summary>
+        /// Проверява дали подадената версия съществува за даден ApplicationName. Ползва се при ForceDownload
+        /// </summary>
+        /// <param name="inApplicationName"></param>
+        /// <param name="inVersion"></param>
+        /// <returns></returns>
+        public static bool VersionExists(string inApplicationName, string inVersion)
+        {
+            var _appElement = Get_Application_Node(inApplicationName);
+            var _exists = _appElement.Elements(C_XE_VERSION).Any(e => e.Value.Equals(inVersion));
+            Debug.WriteLine(_exists.ToString());
+            return ((_appElement != null) && (_appElement.Elements(C_XE_VERSION).Any(e => e.Value.Equals(inVersion))));
         }
 
         /// <summary>

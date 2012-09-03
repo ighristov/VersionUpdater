@@ -20,6 +20,9 @@
                         Version:
                     </td>
                     <td style="padding-left: 10px">
+                        Force download
+                    </td>
+                    <td style="padding-left: 10px">
                         Where to be saved:
                     </td>
                 </tr>
@@ -29,6 +32,9 @@
                     </td>
                     <td style="padding-left: 10px">
                         <asp:TextBox ID="tbVersion" runat="server" Width="70px" Text="1.0.0.0"></asp:TextBox>
+                    </td>
+                    <td style="padding-left: 10px; text-align:center">
+                        <asp:CheckBox ID="chbForce" runat="server" Width="70px"></asp:CheckBox>
                     </td>
                     <td style="padding-left: 10px">
                         <asp:TextBox ID="tbSavePath" runat="server" Width="100%" Text="c:\"></asp:TextBox>

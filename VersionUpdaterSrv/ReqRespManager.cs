@@ -13,30 +13,44 @@ namespace VersionUpdaterSrv
             string _appName = HttpContext.Current.Request.Headers[Constants.C_APPNAME];
             string _appVersion = HttpContext.Current.Request.Headers[Constants.C_APPVERSION];
             if ((string.IsNullOrWhiteSpace(_appName)) || (string.IsNullOrWhiteSpace(_appVersion))) return;
-            Debug.WriteLine(_appName + "; " + _appVersion);
             _appName = _appName.Replace(",", string.Empty).Trim();
             _appVersion = _appVersion.Replace(",", string.Empty).Trim();
-            DownloadLastVersion_if_Present(_appName, _appVersion);
+            bool _forceDownloadVersion = HttpContext.Current.Request.Headers.AllKeys.Contains(Constants.C_FORCEDOWNLOAD);
+            DownloadVersion_if_Present(_appName, _appVersion, _forceDownloadVersion);
         }
 
-        private static void DownloadLastVersion_if_Present(string inAppName, string inAppVersion)
+        private static void DownloadVersion_if_Present(string inCallingAppName, string inCallingVersion, bool inForceDownload)
         {
-            Version _lastAvailableVersion = XMLHelper.Get_Last_Version(inAppName);
-            if (_lastAvailableVersion == null)
+            Version _storedVersion = null;
+            if (inForceDownload)
             {
-                FileManager.Write_AppNotFound_in_Response(inAppName);
-                return;
-            }
-            Version _inputVersion = Version.Parse(inAppVersion);
-            if (_inputVersion >= _lastAvailableVersion)
-            {
-                FileManager.Write_NoGreaterVersion_in_Response(inAppName, _lastAvailableVersion);
-                return;
+                if (!XMLHelper.VersionExists(inCallingAppName, inCallingVersion))
+                {
+                    FileManager.Write_AppNotFound_in_Response(inCallingAppName, inCallingVersion);
+                }
+                else
+                {
+                    _storedVersion = Version.Parse(inCallingVersion);
+                }
             }
             else
             {
-                DownloadFile(inAppName, _lastAvailableVersion);
+                _storedVersion = XMLHelper.Get_Last_Version(inCallingAppName);
+
+                if (_storedVersion == null)
+                {
+                    FileManager.Write_AppNotFound_in_Response(inCallingAppName, string.Empty);
+                    return;
+                }
+
+                Version _inputVersion = Version.Parse(inCallingVersion);
+                if (_inputVersion >= _storedVersion)
+                {
+                    FileManager.Write_NoGreaterVersion_in_Response(inCallingAppName, _storedVersion);
+                    return;
+                }
             }
+            DownloadFile(inCallingAppName, _storedVersion);
         }
 
         public static void DownloadFile(string inApplicationName, Version inVersion)
@@ -52,6 +66,7 @@ namespace VersionUpdaterSrv
         public const string C_APPVERSION = "appversion";
         public const string C_ERRORCODE = "errorcode";
         public const string C_ERRORMSG = "errormsg";
+        public const string C_FORCEDOWNLOAD = "forcedownload";
 
         public enum ErrorCodes
         {
