@@ -56,6 +56,7 @@
     <Content Include="Account\ChangePasswordSuccess.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
+    <Content Include="frmErrorPage.aspx" />
     <Content Include="frmRequest.aspx" />
     <Content Include="HTMLRequestPage.htm" />
     <Content Include="Images\accept.png" />
@@ -119,6 +120,13 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="FileManager.cs" />
+    <Compile Include="frmErrorPage.aspx.cs">
+      <DependentUpon>frmErrorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmErrorPage.aspx.designer.cs">
+      <DependentUpon>frmErrorPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frmRequest.aspx.cs">
       <DependentUpon>frmRequest.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

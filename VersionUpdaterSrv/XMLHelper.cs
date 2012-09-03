@@ -32,6 +32,10 @@ namespace VersionUpdaterSrv
         private static XDocument LoadOrCreateFile()
         {
             XDocument _doc;
+            if (!Directory.Exists(Path.GetDirectoryName(XMLFilePath)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(XMLFilePath));
+            }
             if (File.Exists(XMLFilePath))
             {
                 _doc = XDocument.Load(XMLFilePath);
