@@ -14,6 +14,8 @@ namespace VersionUpdaterSrv
             string _appVersion = HttpContext.Current.Request.Headers[Constants.C_APPVERSION];
             if ((string.IsNullOrWhiteSpace(_appName)) || (string.IsNullOrWhiteSpace(_appVersion))) return;
             Debug.WriteLine(_appName + "; " + _appVersion);
+            _appName = _appName.Replace(",", string.Empty).Trim();
+            _appVersion = _appVersion.Replace(",", string.Empty).Trim();
             DownloadLastVersion_if_Present(_appName, _appVersion);
         }
 
