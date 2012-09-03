@@ -31,7 +31,7 @@
             <div class="clear hideSkiplink">
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
-                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Main Page"/>
+                        <asp:MenuItem NavigateUrl="~/frmVersions.aspx" Text="Main Page"/>
                         <asp:MenuItem NavigateUrl="~/frmRequest.aspx" Text="Test Request"/>
                     </Items>
                 </asp:Menu>

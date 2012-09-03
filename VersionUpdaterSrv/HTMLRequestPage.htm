@@ -12,7 +12,7 @@
             }
             if (httpRequest) {
                 // The requested file must be in the same domain that the page is served from.
-                var url = "Default.aspx";
+                var url = "CheckVersion.aspx";
                 httpRequest.open("GET", url, true);    // async
                 httpRequest.setRequestHeader("AppName", "html.exe");
                 httpRequest.setRequestHeader("Version", "98.7654");

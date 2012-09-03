@@ -49,7 +49,7 @@ namespace VersionUpdaterSrv
         }
 
         /// <summary>
-        /// Връща последната налична версия на даден application
+        /// Връща последната налична версия на даден application или NULL, ако няма такъв ApplicationName
         /// </summary>
         /// <param name="inApplicationName"></param>
         /// <returns></returns>
@@ -89,9 +89,14 @@ namespace VersionUpdaterSrv
             return _resultElement;
         }
 
+        /// <summary>
+        /// Връща XElement за подадения Application, или NULL, ако няма такъв
+        /// </summary>
+        /// <param name="inApplicationName"></param>
+        /// <returns></returns>
         public static XElement Get_Application_Node(string inApplicationName)
         {
-            return XMLFilesDescr.Root.Element(inApplicationName);
+            return XMLFilesDescr.Root.Elements().Where(e => e.Name.LocalName.Equals(inApplicationName, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
         }
 
         /// <summary>
@@ -106,8 +111,8 @@ namespace VersionUpdaterSrv
             _file.Version = (Version.TryParse(inVersionXElement.Value, out _version)) ? _version : null;
             XElement _infoElement = inVersionXElement.Elements().First();
             if (_infoElement == null) throw new NullReferenceException("Не е намерен Info-елемент в елемента Version!");
-            _file.FileName = _infoElement.Attribute(C_XE_FILENAME).ToString();
-            _file.CheckSum = _infoElement.Attribute(C_XE_CHECKSUM).ToString();
+            _file.FileName = _infoElement.Attribute(C_XE_FILENAME).Value;
+            _file.CheckSum = _infoElement.Attribute(C_XE_CHECKSUM).Value;
             _file.DateTime = DateTime.Parse(_infoElement.Attribute(C_XE_DATETIME).Value);
             _file.ApplicationName = inVersionXElement.Parent.Name.LocalName;
             return _file;
@@ -157,5 +162,23 @@ namespace VersionUpdaterSrv
             }
             return _resList;
         }
+
+        /// <summary>
+        /// Връща списък с версиите на избраното приложение
+        /// </summary>
+        /// <returns></returns>
+        public static List<VersionedFile> GetVersions(string inApplicationName)
+        {
+            var _appNode = Get_Application_Node(inApplicationName);
+            if (_appNode == null) return null;
+            List<VersionedFile> _resList = new List<VersionedFile>();
+            foreach (XElement _version in _appNode.Elements())
+            {
+                VersionedFile _verFile = GetVersionedFile_from_XElement(_version);
+                _resList.Add(_verFile);
+            }
+            return _resList.OrderBy(e=>e.Version).ToList();
+        }
+
     }
 }

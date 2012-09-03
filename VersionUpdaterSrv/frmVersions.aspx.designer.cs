@@ -22,6 +22,15 @@ namespace VersionUpdaterSrv {
         protected global::System.Web.UI.WebControls.GridView gvApplications;
         
         /// <summary>
+        /// lblVersionsCaption control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblVersionsCaption;
+        
+        /// <summary>
         /// gvVersions control.
         /// </summary>
         /// <remarks>
@@ -38,15 +47,6 @@ namespace VersionUpdaterSrv {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ObjectDataSource odsApplications;
-        
-        /// <summary>
-        /// odsVersions control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource odsVersions;
         
         /// <summary>
         /// FileUpload1 control.
@@ -76,12 +76,21 @@ namespace VersionUpdaterSrv {
         protected global::System.Web.UI.WebControls.Button btnUpload;
         
         /// <summary>
-        /// Button2 control.
+        /// lblSelectFile control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.Label lblSelectFile;
+        
+        /// <summary>
+        /// lblEnterVersion control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEnterVersion;
     }
 }

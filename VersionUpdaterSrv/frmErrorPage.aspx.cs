@@ -11,7 +11,36 @@ namespace VersionUpdaterSrv
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (true)
+            {
+                ShowDetailedError();
+            }
+        }
 
+        private void ShowDetailedError()
+        {
+            Exception _lastError = Server.GetLastError();
+            if (_lastError == null)
+            {
+                lblMainError.Text = "Cannot get info about current error. Server.GetLastError() == null;";
+                return;
+            }
+            else
+            {
+                lblMainError.Text = _lastError.ToString();
+                Exception _baseEx = _lastError.GetBaseException();
+                if (_baseEx != null)
+                {
+                    divBaseException.Visible = true;
+                    lblBaseException.Text = _baseEx.ToString();
+                }
+                                Exception _innerEx = _lastError.InnerException;
+                if (_innerEx != null)
+                {
+                    divInnerException.Visible = true;
+                    lblInnerException.Text = _innerEx.ToString();
+                }
+            }
         }
     }
 }

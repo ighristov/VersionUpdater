@@ -25,7 +25,8 @@ namespace VersionUpdaterSrv
         void Application_Error(object sender, EventArgs e)
         {
             // Code that runs when an unhandled error occurs
-
+            //Exception objErr = Server.GetLastError().GetBaseException();
+            //throw new NullReferenceException(objErr.ToString(), objErr);
         }
 
         void Session_Start(object sender, EventArgs e)

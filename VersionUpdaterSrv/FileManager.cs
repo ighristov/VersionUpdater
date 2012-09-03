@@ -22,6 +22,8 @@ namespace VersionUpdaterSrv
         /// <returns></returns>
         public static VersionedFile UploadFile_to_Storage(byte[] inFileBytes, string inFileName, Version inVersion, string inGroup)
         {
+            if (string.IsNullOrWhiteSpace(inFileName)) throw new ArgumentNullException("inFileName", "[UploadFile_to_Storage]: FileName is not supplied.");
+            if (string.IsNullOrWhiteSpace(inVersion.ToString())) throw new ArgumentNullException("inVersion", "[UploadFile_to_Storage]: Version is not supplied.");
             if (!Directory.Exists(StoragePath)) Directory.CreateDirectory(StoragePath);
             string _fileName = Get_FilePath_in_Storage(inFileName, inVersion, true);
             using (FileStream _fileStream = new FileStream(_fileName, FileMode.Create))
@@ -82,16 +84,34 @@ namespace VersionUpdaterSrv
             return _bytes;
         }
 
-        public static void WriteFileToResponse(byte[] inBytes, string inFileName)
+        public static void WriteFileToResponse(byte[] inBytes, string inApplicationName, Version inVersion)
         {
             HttpContext.Current.Response.ClearContent();
-            HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(inFileName));
+            HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=" + HttpUtility.UrlEncode(inApplicationName));
             HttpContext.Current.Response.AddHeader("Content-Length", inBytes.Length.ToString());
-            HttpContext.Current.Response.ContentType = ReturnExtension(Path.GetExtension(inFileName).ToLower());
+            HttpContext.Current.Response.AddHeader(Constants.C_APPNAME, inApplicationName);
+            HttpContext.Current.Response.AddHeader(Constants.C_APPVERSION, inVersion.ToString());
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORCODE, ((int)(Constants.ErrorCodes.ecNoError)).ToString());
+            HttpContext.Current.Response.ContentType = ReturnExtension(Path.GetExtension(inApplicationName).ToLower());
             HttpContext.Current.Response.BinaryWrite(inBytes);
             HttpContext.Current.Response.End();
-
         }
+
+        public static void Write_AppNotFound_in_Response(string inApplicationName)
+        {
+            HttpContext.Current.Response.ClearContent();
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORCODE, ((int)Constants.ErrorCodes.ecApplicationNotFound).ToString());
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORMSG, string.Format("The requested application \"{0}\" is not present on server", inApplicationName));
+            HttpContext.Current.Response.End();
+        }
+        public static void Write_NoGreaterVersion_in_Response(string inApplicationName, Version inVersion)
+        {
+            HttpContext.Current.Response.ClearContent();
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORCODE, ((int)Constants.ErrorCodes.ecNoGreaterVersion).ToString());
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORMSG, string.Format("The last version of application \"{0}\" is {1}.", inApplicationName, inVersion));
+            HttpContext.Current.Response.End();
+        }
+
 
         public static string ReturnExtension(string fileextension)
         {

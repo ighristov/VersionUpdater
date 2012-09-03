@@ -56,13 +56,14 @@
     <Content Include="Account\ChangePasswordSuccess.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
+    <Content Include="CheckVersion.aspx" />
     <Content Include="frmErrorPage.aspx" />
     <Content Include="frmRequest.aspx" />
     <Content Include="HTMLRequestPage.htm" />
     <Content Include="Images\accept.png" />
     <Content Include="Images\saveHS.png" />
     <Content Include="Styles\Site.css" />
-    <Content Include="Default.aspx" />
+    <Content Include="frmVersions.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
@@ -113,13 +114,20 @@
     <Compile Include="Account\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Constants.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="CheckVersion.aspx.cs">
+      <DependentUpon>CheckVersion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="CheckVersion.aspx.designer.cs">
+      <DependentUpon>CheckVersion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ReqRespManager.cs" />
+    <Compile Include="frmVersions.aspx.cs">
+      <DependentUpon>frmVersions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmVersions.aspx.designer.cs">
+      <DependentUpon>frmVersions.aspx</DependentUpon>
     </Compile>
     <Compile Include="FileManager.cs" />
     <Compile Include="frmErrorPage.aspx.cs">
@@ -165,7 +173,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>61970</DevelopmentServerPort>
+          <DevelopmentServerPort>61972</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
