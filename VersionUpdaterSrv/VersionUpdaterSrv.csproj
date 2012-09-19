@@ -59,6 +59,7 @@
     <Content Include="CheckVersion.aspx" />
     <Content Include="frmErrorPage.aspx" />
     <Content Include="frmRequest.aspx" />
+    <Content Include="frmXMLStorage.aspx" />
     <Content Include="HTMLRequestPage.htm" />
     <Content Include="Images\accept.png" />
     <Content Include="Images\saveHS.png" />
@@ -120,6 +121,13 @@
     </Compile>
     <Compile Include="CheckVersion.aspx.designer.cs">
       <DependentUpon>CheckVersion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="frmXMLStorage.aspx.cs">
+      <DependentUpon>frmXMLStorage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="frmXMLStorage.aspx.designer.cs">
+      <DependentUpon>frmXMLStorage.aspx</DependentUpon>
     </Compile>
     <Compile Include="ReqRespManager.cs" />
     <Compile Include="frmVersions.aspx.cs">

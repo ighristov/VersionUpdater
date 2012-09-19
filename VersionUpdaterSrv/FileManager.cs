@@ -97,18 +97,13 @@ namespace VersionUpdaterSrv
             HttpContext.Current.Response.End();
         }
 
-        public static void Write_AppNotFound_in_Response(string inApplicationName, string inApplicationVersion)
+        public static void Write_AppNotFound_in_Response(string inApplicationName)
         {
             HttpContext.Current.Response.ClearContent();
-            HttpContext.Current.Response.AddHeader(Constants.C_ERRORCODE, ((int) Constants.ErrorCodes.ecApplicationNotFound).ToString());
-            string _errorMessage = string.IsNullOrWhiteSpace(inApplicationVersion)
-                                       ? string.Format("The requested application \"{0}\" is not present on server", inApplicationName)
-                                       : string.Format("The requested application \"{0}\", version {1} is not present on server", inApplicationName,
-                                                       inApplicationVersion);
-            HttpContext.Current.Response.AddHeader(Constants.C_ERRORMSG, _errorMessage);
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORCODE, ((int)Constants.ErrorCodes.ecApplicationNotFound).ToString());
+            HttpContext.Current.Response.AddHeader(Constants.C_ERRORMSG, string.Format("The requested application \"{0}\" is not present on server", inApplicationName));
             HttpContext.Current.Response.End();
         }
-
         public static void Write_NoGreaterVersion_in_Response(string inApplicationName, Version inVersion)
         {
             HttpContext.Current.Response.ClearContent();
@@ -160,6 +155,28 @@ namespace VersionUpdaterSrv
             return filecontenttype;
 
 
+        }
+
+        public static void Save_New_XMLFile(string inBase64String)
+        {
+            string _fileName = XMLHelper.XMLFilePath;
+            try
+            {
+                if (File.Exists(_fileName))
+                {
+                    File.Delete(_fileName);
+                }
+                using (FileStream _fileStream = new FileStream(_fileName, FileMode.Create))
+                {
+                    var _xmlFileBytes = Convert.FromBase64String(inBase64String);
+                    _fileStream.Write(_xmlFileBytes, 0, _xmlFileBytes.Length);
+                    _fileStream.Flush(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("[Save_New_XMLFile]", ex);
+            }
         }
     }
 }

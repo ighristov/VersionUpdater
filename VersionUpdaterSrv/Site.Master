@@ -33,6 +33,7 @@
                     <Items>
                         <asp:MenuItem NavigateUrl="~/frmVersions.aspx" Text="Main Page"/>
                         <asp:MenuItem NavigateUrl="~/frmRequest.aspx" Text="Test Request"/>
+                        <asp:MenuItem NavigateUrl="~/frmXMLStorage.aspx" Text="XML Storage"/>
                     </Items>
                 </asp:Menu>
             </div>

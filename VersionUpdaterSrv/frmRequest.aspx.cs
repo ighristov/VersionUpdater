@@ -23,12 +23,7 @@ namespace VersionUpdaterSrv
             WebRequest _request = WebRequest.Create(_uri);
             _request.Headers.Add(Constants.C_APPNAME, tbAppName.Text.Trim());
             _request.Headers.Add(Constants.C_APPVERSION, tbVersion.Text.Trim());
-            if (chbForce.Checked)
-            {
-                _request.Headers.Add(Constants.C_FORCEDOWNLOAD, string.Empty);
-            }
             int totalBytesRead = 0;
-            string _downloadedVersion = string.Empty;
             string _filePath = Path.Combine(tbSavePath.Text, tbAppName.Text);
             using (var _httpResponse = _request.GetResponse())
             {
@@ -53,7 +48,6 @@ namespace VersionUpdaterSrv
                 }
                 else
                 {
-                    _downloadedVersion = _httpResponse.Headers[Constants.C_APPVERSION];
                     using (Stream responseStream = _httpResponse.GetResponseStream())
                     {
                         using (FileStream _localFileStream = new FileStream(_filePath, FileMode.Create))
@@ -69,10 +63,6 @@ namespace VersionUpdaterSrv
                     }
                 }
                 lblResult.Text = "Резултат: Свален файл " + _filePath + " (" + totalBytesRead + "b.)";
-                if (!string.IsNullOrWhiteSpace(_downloadedVersion))
-                {
-                    lblResult.Text += "; версия " + _downloadedVersion;
-                }
             }
         }
 

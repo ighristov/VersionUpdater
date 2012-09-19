@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,11 @@ namespace VersionUpdaterSrv
 {
     public class XMLHelper
     {
+        private const string C_BG_DATEFORMAT = "dd.MM.yyyy HH:mm:ss";
         public const string C_FILENAME = "FilesDescription.xml";
+        /// <summary>
+        /// Пълен път до XML-файла + името му.
+        /// </summary>
         public static string XMLFilePath = HttpContext.Current.Server.MapPath(Path.Combine("XMLStore", C_FILENAME));
 
         private const string C_XE_INFO = "Info";
@@ -50,6 +54,15 @@ namespace VersionUpdaterSrv
         }
 
         /// <summary>
+        /// Изчита отново XML-а и го записва в static prop.
+        /// </summary>
+        /// <returns></returns>
+        public static void ReloadXMLFile()
+        {
+            _filesDescr = LoadOrCreateFile();
+        }
+
+        /// <summary>
         /// Връща последната налична версия на даден application или NULL, ако няма такъв ApplicationName
         /// </summary>
         /// <param name="inApplicationName"></param>
@@ -65,20 +78,6 @@ namespace VersionUpdaterSrv
                 _resultVersion = _versions.First();
             }
             return _resultVersion;
-        }
-
-        /// <summary>
-        /// Проверява дали подадената версия съществува за даден ApplicationName. Ползва се при ForceDownload
-        /// </summary>
-        /// <param name="inApplicationName"></param>
-        /// <param name="inVersion"></param>
-        /// <returns></returns>
-        public static bool VersionExists(string inApplicationName, string inVersion)
-        {
-            var _appElement = Get_Application_Node(inApplicationName);
-            var _exists = _appElement.Elements(C_XE_VERSION).Any(e => e.Value.Equals(inVersion));
-            Debug.WriteLine(_exists.ToString());
-            return ((_appElement != null) && (_appElement.Elements(C_XE_VERSION).Any(e => e.Value.Equals(inVersion))));
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace VersionUpdaterSrv
             if (_infoElement == null) throw new NullReferenceException("Не е намерен Info-елемент в елемента Version!");
             _file.FileName = _infoElement.Attribute(C_XE_FILENAME).Value;
             _file.CheckSum = _infoElement.Attribute(C_XE_CHECKSUM).Value;
-            _file.DateTime = DateTime.Parse(_infoElement.Attribute(C_XE_DATETIME).Value);
+            _file.DateTime = DateTime.ParseExact(_infoElement.Attribute(C_XE_DATETIME).Value, C_BG_DATEFORMAT, CultureInfo.InvariantCulture);
             _file.ApplicationName = inVersionXElement.Parent.Name.LocalName;
             return _file;
         }
@@ -145,7 +144,7 @@ namespace VersionUpdaterSrv
             _xElement.Add(new XElement(C_XE_INFO,
                                        new XAttribute(C_XE_FILENAME, inVersionedFile.FileName),
                                        new XAttribute(C_XE_CHECKSUM, inVersionedFile.CheckSum),
-                                       new XAttribute(C_XE_DATETIME, inVersionedFile.DateTime.ToString("dd.MM.yyyy HH:mm:ss"))));
+                                       new XAttribute(C_XE_DATETIME, inVersionedFile.DateTime.ToString(C_BG_DATEFORMAT))));
             return _xElement;
         }
 
