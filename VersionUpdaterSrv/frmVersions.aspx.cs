@@ -22,6 +22,11 @@ namespace VersionUpdaterSrv
             }
         }
 
+        protected void TestRequest()
+        {
+            
+        }
+
         protected void btnUpload_Click(object sender, EventArgs e)
         {
             bool _dataOK = true;

@@ -35,6 +35,7 @@ namespace VersionUpdaterSrv
             _versionedFile.ApplicationName = inFileName;
             _versionedFile.Group = inGroup;
             _versionedFile.FileName = _fileName;
+            _versionedFile.FileSize = inFileBytes.Length;
             _versionedFile.DateTime = DateTime.Now;
             _versionedFile.Version = inVersion;
             _versionedFile.CheckSum = GetSHA1Checksum(inFileBytes);

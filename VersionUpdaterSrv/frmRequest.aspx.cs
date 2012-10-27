@@ -13,18 +13,27 @@ namespace VersionUpdaterSrv
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!IsPostBack) CreateRequest();
+            if (!IsPostBack)
+            {
+                PrepareForm();
+            }
         }
 
-        private void CreateRequest()
+        private void PrepareForm()
         {
             string _lastPageName = Request.Url.Segments[Request.Url.Segments.Length - 1];
-            string _uri = Request.Url.AbsoluteUri.Replace(_lastPageName, "CheckVersion.aspx");
-            WebRequest _request = WebRequest.Create(_uri);
-            _request.Headers.Add(Constants.C_APPNAME, tbAppName.Text.Trim());
-            _request.Headers.Add(Constants.C_APPVERSION, tbVersion.Text.Trim());
+            tbURL.Text = Request.Url.AbsoluteUri.Replace(_lastPageName, "CheckVersion.aspx");
+            tbAppName.Text = string.Empty;
+            tbVersion.Text = "1.0.0.0";
+            tbSavePath.Text = @"c:\";
+        }
+        public static void CreateRequest(string inURL, string inAppName, string inAppVersion, string inSavePath, out string outResult)
+        {
+            WebRequest _request = WebRequest.Create(inURL);
+            _request.Headers.Add(Constants.C_APPNAME, inAppName);
+            _request.Headers.Add(Constants.C_APPVERSION, inAppVersion);
             int totalBytesRead = 0;
-            string _filePath = Path.Combine(tbSavePath.Text, tbAppName.Text);
+            string _filePath = Path.Combine(inSavePath, inAppName);
             using (var _httpResponse = _request.GetResponse())
             {
                 int _errorCode = (_httpResponse.Headers.AllKeys.Contains(Constants.C_ERRORCODE))
@@ -32,7 +41,7 @@ namespace VersionUpdaterSrv
                                      : -1;
                 if (_errorCode < 0)
                 {
-                    lblResult.Text = "Headers does not contain key \"" + Constants.C_ERRORCODE + "\"";
+                    outResult = "Headers does not contain key \"" + Constants.C_ERRORCODE + "\"";
                     return;
                 }
                 else if (_errorCode > 0)
@@ -42,7 +51,7 @@ namespace VersionUpdaterSrv
                                            : "Headers does not contain key \"" + Constants.C_ERRORMSG + "\"";
                     if (!string.IsNullOrWhiteSpace(_errorMsg))
                     {
-                        lblResult.Text = string.Format("ErrorCode: {0};      ErrorMessage: {1}", _errorCode, _errorMsg);
+                        outResult = string.Format("ErrorCode: {0};      ErrorMessage: {1}", _errorCode, _errorMsg);
                         return;
                     }
                 }
@@ -62,13 +71,15 @@ namespace VersionUpdaterSrv
                         }
                     }
                 }
-                lblResult.Text = "Резултат: Свален файл " + _filePath + " (" + totalBytesRead + "b.)";
+                outResult = "Резултат: Свален файл " + _filePath + " (" + totalBytesRead + "b.)";
             }
         }
 
         protected void btnRequest_Click(object sender, EventArgs e)
         {
-            CreateRequest();
+            string _result = string.Empty;
+            CreateRequest(tbURL.Text, tbAppName.Text, tbVersion.Text, tbSavePath.Text, out _result);
+            lblResult.Text = _result;
         }
     }
 }

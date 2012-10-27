@@ -21,7 +21,7 @@
                 Currently uploaded applications
             </h2>
         </div>
-        <div style="float: none; padding-right: 20px; width: 450px;">
+        <div style="float: none; padding-right: 20px; width: 540px;">
             <asp:GridView ID="gvApplications" runat="server" BorderStyle="Solid" BorderWidth="1px"
                 CellPadding="4" DataSourceID="odsApplications" ForeColor="#333333" GridLines="Vertical"
                 AutoGenerateColumns="False" Width="100%" DataKeyNames="ApplicationName,Version"
@@ -44,8 +44,11 @@
                     <asp:BoundField DataField="DateTime" HeaderText="Date">
                         <ItemStyle Width="120px" HorizontalAlign="Center" Font-Size="11px" />
                     </asp:BoundField>
+                    <asp:BoundField DataField="FileSize" HeaderText="FileSize">
+                        <ItemStyle Width="80px" HorizontalAlign="Right" Font-Size="11px" />
+                    </asp:BoundField>
                     <asp:TemplateField>
-                        <ItemStyle HorizontalAlign="Center" />
+                        <ItemStyle HorizontalAlign="Center" Width="40px"/>
                         <ItemTemplate>
                             <asp:ImageButton runat="server" ID="btnDownloadLastVersion" ImageUrl="~/Images/SaveHS.png"
                                 CommandName="Download" CommandArgument='<%#Bind("ApplicationName") %>' />
@@ -85,6 +88,9 @@
                     <asp:BoundField HeaderText="FileName" DataField="FileName">
                         <ItemStyle Font-Size="11px" />
                     </asp:BoundField>
+                    <asp:BoundField DataField="FileSize" HeaderText="FileSize">
+                        <ItemStyle Width="80px" HorizontalAlign="Right" Font-Size="11px" />
+                    </asp:BoundField>
                     <asp:BoundField HeaderText="Checksum" DataField="Checksum">
                         <ItemStyle Width="200px" Font-Size="11px" />
                     </asp:BoundField>
@@ -92,7 +98,7 @@
                         <ItemStyle Width="120px" HorizontalAlign="Center" Font-Size="11px" />
                     </asp:BoundField>
                     <asp:TemplateField>
-                        <ItemStyle HorizontalAlign="Center" />
+                        <ItemStyle HorizontalAlign="Center" Width="40px"/>
                         <ItemTemplate>
                             <asp:ImageButton runat="server" ID="btnDownloadVersion" ImageUrl="~/Images/SaveHS.png"
                                 CommandName="Download" CommandArgument='<%#Bind("ApplicationName") %>' />

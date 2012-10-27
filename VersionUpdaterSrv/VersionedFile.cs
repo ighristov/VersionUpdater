@@ -11,6 +11,7 @@ namespace VersionUpdaterSrv
         public string Group { get; set; }
         public string FileName { get; set; }
         public Version Version { get; set; }
+        public int FileSize { get; set; }
         public string CheckSum { get; set; }
         public DateTime DateTime { get; set; }
     }

@@ -21,6 +21,7 @@ namespace VersionUpdaterSrv
         private const string C_XE_INFO = "Info";
         private const string C_XE_FILENAME = "Filename";
         private const string C_XE_VERSION = "Version";
+        private const string C_XE_FILESIZE = "FileSize";
         private const string C_XE_CHECKSUM = "Checksum";
         private const string C_XE_DATETIME = "DateTime";
 
@@ -126,6 +127,7 @@ namespace VersionUpdaterSrv
             XElement _infoElement = inVersionXElement.Elements().First();
             if (_infoElement == null) throw new NullReferenceException("Не е намерен Info-елемент в елемента Version!");
             _file.FileName = _infoElement.Attribute(C_XE_FILENAME).Value;
+            _file.FileSize = (_infoElement.Attribute(C_XE_FILESIZE) == null) ? -1 : int.Parse(_infoElement.Attribute(C_XE_FILESIZE).Value);
             _file.CheckSum = _infoElement.Attribute(C_XE_CHECKSUM).Value;
             _file.DateTime = DateTime.ParseExact(_infoElement.Attribute(C_XE_DATETIME).Value, C_BG_DATEFORMAT, CultureInfo.InvariantCulture);
             _file.ApplicationName = inVersionXElement.Parent.Name.LocalName;
@@ -143,6 +145,7 @@ namespace VersionUpdaterSrv
             _xElement.RemoveAttributes();
             _xElement.Add(new XElement(C_XE_INFO,
                                        new XAttribute(C_XE_FILENAME, inVersionedFile.FileName),
+                                       new XAttribute(C_XE_FILESIZE, inVersionedFile.FileSize),
                                        new XAttribute(C_XE_CHECKSUM, inVersionedFile.CheckSum),
                                        new XAttribute(C_XE_DATETIME, inVersionedFile.DateTime.ToString(C_BG_DATEFORMAT))));
             return _xElement;

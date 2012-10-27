@@ -14,6 +14,16 @@
             <table style="display: inline">
                 <tr>
                     <td>
+                        URL:
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <asp:TextBox runat="server" ID="tbURL" Width="100%"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         Application Name:
                     </td>
                     <td style="padding-left: 10px">
